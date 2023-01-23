@@ -104,14 +104,11 @@ public class PlayerMain : MonoBehaviour
         if (combatTimer > 0) inCombat = true;
         if (!inCombat)
         {
-
-
             if (!regenerationStarted)
             {
                 StartCoroutine(RegenerationCycle());
                 regenerationStarted = true;
             }
-
         }
         else
         {
@@ -126,7 +123,6 @@ public class PlayerMain : MonoBehaviour
     IEnumerator RegenerationCycle()
     {
         currentHealth+=5;
-
         yield return new WaitForSeconds(regenerationRate);
         regenerationStarted = false;
     }
@@ -141,7 +137,7 @@ public class PlayerMain : MonoBehaviour
         }
         Debug.Log("Game Over");
     }
-
+    #region Animation Functions
     internal void AttackAnimation()
     {
         animator.SetTrigger(attackID);
@@ -154,7 +150,9 @@ public class PlayerMain : MonoBehaviour
     {
         animator.SetTrigger(commandID);
     }
-    #region AudioFunctions
+
+    #endregion
+    #region Audio Functions
     public void RallyAudio()
     {
         audioSource.PlayOneShot(rallyAudio);
@@ -173,10 +171,7 @@ public class PlayerMain : MonoBehaviour
     }
     public void TakeDamageAudio()
     {
-        if (!takeDamageAudioPlayed)
-        {
-            StartCoroutine(TakeDamageClip());
-        }
+        if (!takeDamageAudioPlayed) StartCoroutine(TakeDamageClip());
     }
     IEnumerator TakeDamageClip()
     {

@@ -35,7 +35,6 @@ public class PlayerMovement : MonoBehaviour
         mainScript = GetComponent<PlayerMain>();
         agent = GetComponent<NavMeshAgent>();
         mainCamera = Camera.main;
-        
     }
 
     // Update is called once per frame
@@ -47,12 +46,11 @@ public class PlayerMovement : MonoBehaviour
         if (mainScript.commandScript.selectAttack && mainScript.commandScript.attackObjective != null && Vector3.Distance(transform.position, mainScript.commandScript.attackObjective.transform.position) <= 2f)
         {
             agent.SetDestination(transform.position);
-            //transform.LookAt(mainScript.commandScript.attackObjective.transform.position);
         }
        
     }
 
-    private void Formations()
+    private void Formations() //Each unit will take a spot to be on in the formation
     {
 
         _amount = mainScript.commandScript.allUnits.Count;
@@ -73,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
             unitMain.Spread = Spread;
         }
     }
-    private void Movement()
+    private void Movement() //Set a spot Set a raycast, if hit the ground, move the player and all units under command to their specific point in formation
     {
         Formations();
         if (!mainScript.isSelecting)
@@ -112,7 +110,7 @@ public class PlayerMovement : MonoBehaviour
         }
       
     }
-    private void SoloMovement()
+    private void SoloMovement() //Move player individually
     {
         if (!mainScript.isSelecting)
         {

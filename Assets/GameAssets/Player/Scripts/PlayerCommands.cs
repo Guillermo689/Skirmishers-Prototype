@@ -132,7 +132,7 @@ public class PlayerCommands : MonoBehaviour
     }
 
     #region AttackFunctions
-    private void UpdateUnits()
+    private void UpdateUnits() // Check if units are dead and remove them from the lists
     {
         for (int i = 0; i < meleeUnits.Count; i++)
         {
@@ -178,7 +178,7 @@ public class PlayerCommands : MonoBehaviour
         }
         
     }
-    public void AttackAllFunction()
+    public void AttackAllFunction() // When attack command is enabled, cast a way to the target when clicked and send all units to attack
     {        
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
@@ -244,7 +244,7 @@ public class PlayerCommands : MonoBehaviour
             }
         }
     }
-    public void StopAttack()
+    public void StopAttack() // Stop attack
     {
         isAttacking = false;
         mainScript.movementScript.agent.isStopped = false;
@@ -256,13 +256,13 @@ public class PlayerCommands : MonoBehaviour
     }
     public void GoToAttack()
     {
-        //======================= Stop coroutine from check to point and set destination to target ======================
+        //======================= Set destination to target ======================
        mainScript.movementScript.agent.SetDestination(attackObjective.transform.position);
        
         isAttacking = true;
     }
     
-    public void AttackAll()
+    public void AttackAll() //Send all units to attack target
     {
         foreach (GameObject unit in meleeUnits)
         {
@@ -292,7 +292,7 @@ public class PlayerCommands : MonoBehaviour
       StartCoroutine(AttackCycle());
        
     }
-    IEnumerator AttackCycle()
+    IEnumerator AttackCycle() //Check if the target is near and attack, if not, go to the target position
     {
         mainScript.StartCombatTimer();
         if (attackObjective != null && isAttacking)
@@ -343,43 +343,21 @@ public class PlayerCommands : MonoBehaviour
     }
     #endregion
 
-    //========================= Command Functions ======================================
     #region CommandFunctions
-    private void ShowActionMenu()
+    private void ShowActionMenu() //Show command and action menus
     {
         if (actionMenu.IsPressed())
         {
-            if (gameEvents.data.spanish)
-            {
-                actionMenuAnimatorESP.SetBool(actionMenuID, true);
-            }
-            else
-            {
-                actionMenuAnimator.SetBool(actionMenuID, true);
-
-            }
-
-
-
+            if (gameEvents.data.spanish) actionMenuAnimatorESP.SetBool(actionMenuID, true);
+            else actionMenuAnimator.SetBool(actionMenuID, true);
         }
         else
         {
-            if (gameEvents.data.spanish)
-            {
-                actionMenuAnimatorESP.SetBool(actionMenuID, false);
-            }
-            else
-            {
-                actionMenuAnimator.SetBool(actionMenuID, false);
-            }
-           
-
+            if (gameEvents.data.spanish) actionMenuAnimatorESP.SetBool(actionMenuID, false);
+            else actionMenuAnimator.SetBool(actionMenuID, false);
         }
-
-
-
     }
-    public void CommandAggressiveOn()
+    public void CommandAggressiveOn() //Set units to attack nearby enemies
     {
         foreach (GameObject unit in allUnits)
         {
@@ -390,7 +368,7 @@ public class PlayerCommands : MonoBehaviour
             unitMain.GoToAttack();
         }
     }
-    public void CommandAggressiveOff()
+    public void CommandAggressiveOff() //Set units not to attack nearby enemies
     {
         foreach (GameObject unit in allUnits)
         {
@@ -399,21 +377,19 @@ public class PlayerCommands : MonoBehaviour
             unitMain.aggressiveStance = false;
         }
     }
-    public void CommandSelectAttackAll()
+    public void CommandSelectAttackAll() //Set the cursor to sword and enter attack mode, and wait for left click to run attack function
     {
         mainScript.isSelecting = true;
         selectAttack = true;
         CursorSword();
-       
-        //======================= set attackstate to choose a target ===============================
     }
-    public void CommandSoloMode()
+    public void CommandSoloMode() //Clear all commanded units from the lists
     {
         meleeUnits.Clear();
         rangedUnits.Clear();
         allUnits.Clear();
     }
-    public void CommandRallyAll()
+    public void CommandRallyAll() //Call all units in the radius and add them to the lists
     {
         mainScript.CommandAnimation();
         meleeUnits.Clear();
@@ -454,9 +430,9 @@ public class PlayerCommands : MonoBehaviour
         }
         //=================== get all units in the area ===================================
     }
-    public void CommandRallyMelee()
+    public void CommandRallyMelee() //Call all melee units in the radius and add them to the lists
     {
-        mainScript.CommandAnimation();
+        mainScript.CommandAnimation(); 
         meleeUnits.Clear();
         rangedUnits.Clear();
         allUnits.Clear();
@@ -486,20 +462,7 @@ public class PlayerCommands : MonoBehaviour
         }
         //===================== get all melee units in the area ==============================
     }
-    public void CommandStop()
-    {
-        StopAttack();
-        mainScript.movementScript.agent.SetDestination(transform.position);
-        foreach (GameObject unit in allUnits)
-        {
-            UnitMain unitMain = unit.GetComponent<UnitMain>();
-            unitMain.StopAttack();
-        }
-
-    }
-
-    
-    public void CommandRallyRanged()
+    public void CommandRallyRanged() //Call all ranged units in the radius and add them to the lists
     {
         mainScript.CommandAnimation();
         meleeUnits.Clear();
@@ -529,6 +492,19 @@ public class PlayerCommands : MonoBehaviour
             }
         }
     }
+    public void CommandStop() 
+    {
+        StopAttack();
+        mainScript.movementScript.agent.SetDestination(transform.position);
+        foreach (GameObject unit in allUnits)
+        {
+            UnitMain unitMain = unit.GetComponent<UnitMain>();
+            unitMain.StopAttack();
+        }
+
+    }
+
+    
     #endregion
 
     private void OnDrawGizmosSelected()

@@ -32,11 +32,6 @@ public class CameraFollow : MonoBehaviour
 
     private void CameraRotarion()
     {
-        if (Mouse.current.rightButton.wasPressedThisFrame)
-        {
-           // p1 = Mouse.current.position.ReadValue();
-
-        }
         if (Mouse.current.rightButton.isPressed)
         {
            
@@ -55,6 +50,7 @@ public class CameraFollow : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
         }
+        //This is the zoom
         offset.y -= Mouse.current.scroll.ReadValue().y  * zoomSpeed * Time.deltaTime;
         if ((offset.y >= maxHeight))
         {

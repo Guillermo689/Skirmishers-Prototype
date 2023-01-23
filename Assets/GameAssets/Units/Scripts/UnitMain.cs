@@ -194,7 +194,7 @@ public class UnitMain : MonoBehaviour
         }
        
     }
-    IEnumerator RescueCheck()
+    IEnumerator RescueCheck() //Check each second if player can be rescued
     {
         if (playerNumber == 0 && playerGroup != 0)
         {
@@ -248,7 +248,7 @@ public class UnitMain : MonoBehaviour
         attackObjective = null;
         Destroy(gameObject, 120f);
     }
-    private void StopCoroutinesSelected()
+    private void StopCoroutinesSelected() //Stop specific coroutines
     {
         StopCoroutine(AttackCycle());
         StopCoroutine(RangedAttackCycle());
